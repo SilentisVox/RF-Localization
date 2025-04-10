@@ -9,15 +9,16 @@ Our approach to signal source localization uses a particle filter, which is rela
 
 The use of Unmanned Aerial Systems, UAS, as mobile sensors for RF source localization has been and continues to be explored [2, 3, 4, 5]. A literature review that we recommend may be found in [6]. The work that we present differs from existing methods in three significant ways: 1) We do not rely on directional antennas or known RF parameters; 2) We localize multiple RF sources using real hardware; 3) We use only a Raspberry Pi Zero 2W for sensing.
 
-2      Platform and Sensing
+### **2      Platform and Sensing**
 We assume the use of a multirotor platform carrying a sensor capable of obtaining received signal strength indicator (RSSI) measurements. The position of the multirotor is known and accessible. The algorithm uses only RSSI measurements and their associated locations. The RSSI sensor has been the onboard Wi-Fi of a Raspberry Pi Zero 2W (Pi 2). While this is not an optimal sensor, it demonstrates that specialized hardware is not required.
 
-2.1    Obtaining RSSI Measurements with the Pi Zero 2w
+### **2.1    Obtaining RSSI Measurements with the Pi Zero 2w**
 The Pi2 is a low-cost and low-swap single-board computer capable of running a Linux operating system. The Pi2s that we use run a 64-bit headless version of a Raspberry Pi OS.
 
 We use the Linux IW command-line utility to obtain RSSI measurements using the default Wi-Fi interface WLAN0. The command in 2.1 will produce a list of available Wi-Fi networks, their SSID, their BSSID, and signal strength in dBm. Example output is shown in Appendix A.
 
       $ sudo iw dev wlan0 scan
+      
 Upon completing a scan, the RSSI, SSID, and BSSID are collected and written to a file with the latitude, longitude, and altitude of the multirotor platform. We also record the number of GPS satellites to facilitate filtering any measurements with four-position estimates. An example of data recorded in this manner is given in Appendix B. Data is formatted as described in the table below.
 
 Column	1	2	3	4	5	6	7
