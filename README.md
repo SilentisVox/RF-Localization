@@ -1,4 +1,4 @@
-<p style="font-size: 1.05em" align="center">
+<p style="font-size: 72px" align="center">
   RF Localization
 </h1>
 <p align="center">
