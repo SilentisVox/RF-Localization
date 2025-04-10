@@ -31,23 +31,3 @@ Our specific particle filtering approach derives from chapter [3] of [1]. Specif
 
 ![image](https://github.com/user-attachments/assets/aa1e1be6-4bbd-4943-8bc9-f4340154263d)
 
-where 
- Is the received power and dB at short reference distance 
- from the source. 
- is the propagation loss from the source to the sensor. 
- is the Euclidian distance from the source to the sensor in meters. And 
- is zero mean Gaussian white noise with known standard deviation 
-
-Ideally the propagation loss 
- in free space is two. However, 
- will be distinct at different locations due to multipath and shadowing. In some applications it is desirable to learn 
- as a function of sensor and source location 
-. We won't be able to do that so we just need to deal with uncertainty in practice 
- is between 2 and 4 [1]. We do not have access to the reference power 
- of the source that we're localizing we assume that 
-.
-
-Our approach to localization (described in chapter [3] of [1]) is to use a particle filter. Each particle filter in our filter represents a hypophesis of the radial parameters 
- and a position 
- that gives a distance when compared to the location where a measurement is taken 
-. Using the generalized likelihood function in [1} we evaluate the likelihood of each hypothesis for each new measurement. The least likely hypotheses is discarded and replaced with new hypothesis. Over distribution over the possible position of the true RF source.
