@@ -1,4 +1,4 @@
-<h2 align="center">
+<p align="center">
   RF Localization
 </h1>
 <p align="center">
