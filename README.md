@@ -1,9 +1,5 @@
 # **RF Localization**
 
-SilentisVox
-
-April 9, 2025
-
 ### **1       Introduction**
 Our approach to signal source localization uses a particle filter, which is relatively common for a source localization problem. Our specific particle filtering approach derives from Chapter 3 of [1] and uses a generalized likelihood function to account for parameters of RF source which are not known but are assumed to have bounded values.
 
