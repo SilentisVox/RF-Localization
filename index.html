@@ -1,26 +1,144 @@
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        RF Localization
-    </title>
+    <meta charset="UTF-8">
+    <title>RF Source Localization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Hedvig Letters Serif', serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 30px;
+        }
+
+        .sideshade {
+            background-color: #0a0a0a;
+            padding: 60px 40px;
+            border-left: 2px solid #1a1a1a;
+            border-right: 2px solid #1a1a1a;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.5em;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.3em;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.25em;
+            color: #b0b0b0;
+            font-style: italic;
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: white;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.05em;
+            color: #cccccc;
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            color: #cccccc;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            text-align: left;
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
 <body>
-    <h1>
-        RF Localization
-    </h1>
-    <p>
-        HELLO WORLD!! HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!
-    </p>
-    <p>
-        HELLO WORLD!! HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!
-    </p>
-    <p>
-        HELLO WORLD!! HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!
-    </p>
-    <p>
-        HELLO WORLD!! HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!HELLO WORLD!!
-    </p>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <div class="container">
+        <div class="sideshade">
+            <h1>RF Source Localization</h1>
+            <div class="subtitle">Jaden K. Locke<br>April 9, 2025</div>
+
+            <h2>1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Introduction</h2>
+            <p>
+                Our approach to signal source localization uses a particle filter, which is relatively common for a source localization problem.
+                Our specific particle filtering approach derives from Chapter 3 of [1] and uses a generalized likelihood function to account for parameters
+                of RF source which are not known but are assumed to have bounded values.
+            </p>
+            <p>
+                The use of Unmanned Aerial Systems, UAS, as mobile sensors for RF source localization has been and continues to be explored [2, 3, 4, 5].
+                A literature review that we recommend may be found in [6]. The work that we present differs from existing methods in three significant ways:
+                1) We do not rely on directional antennas or known RF parameters; 2) We localize multiple RF sources using real hardware;
+                3) We use only a Raspberry Pi Zero 2W for sensing.
+            </p>
+
+            <h2>2 &nbsp;&nbsp;&nbsp;&nbsp; Platform and Sensing</h2>
+            <p>
+                We assume the use of a multirotor platform carrying a sensor capable of obtaining received signal strength indicator (RSSI) measurements.
+                The position of the multirotor is known and accessible. The algorithm uses only RSSI measurements and their associated locations.
+                The RSSI sensor has been the onboard Wi-Fi of a Raspberry Pi Zero 2W (Pi 2). While this is not an optimal sensor, it demonstrates that
+                specialized hardware is not required.
+            </p>
+
+            <h2>2.1 &nbsp;&nbsp; Obtaining RSSI Measurements with the Pi Zero 2w</h2>
+            <p>
+                The Pi2 is a low-cost and low-swap single-board computer capable of running a Linux
+                operating system. The Pi2s that we use run a 64-bit headless version of a Raspberry Pi OS.
+            </p>
+            <p>
+                We use the Linux IW command-line utility to obtain RISS measurements using the default Wi-Fi interface WLAN0. The command in 2.1 will
+                produce a list of available Wi-Fi networks, their SSID, their BSSID, and signal strength in dBm. Example output is shown in Appendix A.
+            </p>
+            <h3>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ sudo iw dev wlan0 scan
+            </h3>
+            <p>
+                Upon completing a scan, the RISD, SSID, and BSSID are collected and written to a file with the latitude, longitude, and altitude of the
+                multirotor platform. We also record the number of GPS satellites to facilitate filtering any measurements with four-position estimates.
+                An example of data recorded in this manner is given in Appendix B. Data is formatted as described in the table below.
+            </p>
+            <p>
+                DONT FORGET CSV
+            </p>
+            <p>
+                Note, the Pi 2 onboard Wi-Fi only support 2.4 GHz bands. As a result, active scanning uses IW is faster on the Pi 2 than it would be with
+                other devices that also scan 5 GHz bands. As implemented, our Pi 2 is able to scan at a rate faster than 1 Hz. To date, we have not attempted
+                running localization online on the Pi 2. Localization has been accomplished in post-processing by polling the data file generated by the Pi
+                2. We also know that passive scanning may be accomplished using devices that support promiscuous mode. We have not explored that option.
+            </p>
+
+            <h2>3 &nbsp;&nbsp;&nbsp;&nbsp; Localization</h2>
+            <p>
+                Our specific particle filtering approach derives from chapter [3] of [1]. Specifically the RSSI measurement \( z_m \) in dB is assumed to be 
+                represented by the model
+            </p>
+            <p style="font-size: 1.5em; text-align: center;">
+                \( z_m = \mathcal{A}_0 - 10\phi_m \log_{10}(d_m / d_0) + \nu_m \)
+            </p>
+            <p>
+                where \( \mathcal{A}_0 \in \mathbb{R}\) Is the received power and dB at short reference distance \( d_0 \) from the source. \( \phi_m \) is the propagation loss from the
+                source to the sensor. \( d \) is the Euclidian distance from the source to the sensor in meters. And \( v_m \) is zero mean Gaussian white noise with known
+                standard deviation \( \sigma = 2 \)
+            </p>
+        </div>
+    </div>
 </body>
 </html>
