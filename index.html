@@ -68,6 +68,20 @@
             text-align: left;
             letter-spacing: 2px;
         }
+
+        table {
+            margin: 30px auto 10px;
+            border-collapse: collapse;
+            border: 1px solid #555;
+            font-size: 1em;
+        }
+
+        th, td {
+            padding: 10px 20px;
+            border: 1px solid #777;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -75,7 +89,7 @@
     <div class="container">
         <div class="sideshade">
             <h1>RF Source Localization</h1>
-            <div class="subtitle">Jaden K. Locke<br>April 9, 2025</div>
+            <div class="subtitle">Silentis Vox<br>April 9, 2025</div>
 
             <h2>1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Introduction</h2>
             <p>
@@ -104,19 +118,41 @@
                 operating system. The Pi2s that we use run a 64-bit headless version of a Raspberry Pi OS.
             </p>
             <p>
-                We use the Linux IW command-line utility to obtain RISS measurements using the default Wi-Fi interface WLAN0. The command in 2.1 will
+                We use the Linux IW command-line utility to obtain RSSI measurements using the default Wi-Fi interface WLAN0. The command in 2.1 will
                 produce a list of available Wi-Fi networks, their SSID, their BSSID, and signal strength in dBm. Example output is shown in Appendix A.
             </p>
             <h3>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ sudo iw dev wlan0 scan
             </h3>
             <p>
-                Upon completing a scan, the RISD, SSID, and BSSID are collected and written to a file with the latitude, longitude, and altitude of the
+                Upon completing a scan, the RSSI, SSID, and BSSID are collected and written to a file with the latitude, longitude, and altitude of the
                 multirotor platform. We also record the number of GPS satellites to facilitate filtering any measurements with four-position estimates.
                 An example of data recorded in this manner is given in Appendix B. Data is formatted as described in the table below.
             </p>
-            <p>
-                DONT FORGET CSV
+            <table>
+                <tr>
+                    <th>Column</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                </tr>
+                <tr>
+                    <td>Contents</td>
+                    <td>SSID</td>
+                    <td>RSSI</td>
+                    <td>BSSID</td>
+                    <td>Latitude</td>
+                    <td>Longitude</td>
+                    <td>Altitude</td>
+                    <td>GPS</td>
+                </tr>
+            </table>
+            <p style="text-align: center; padding-bottom: 20px">
+                Table 1: Description of data
             </p>
             <p>
                 Note, the Pi 2 onboard Wi-Fi only support 2.4 GHz bands. As a result, active scanning uses IW is faster on the Pi 2 than it would be with
@@ -127,16 +163,29 @@
 
             <h2>3 &nbsp;&nbsp;&nbsp;&nbsp; Localization</h2>
             <p>
-                Our specific particle filtering approach derives from chapter [3] of [1]. Specifically the RSSI measurement \( z_m \) in dB is assumed to be 
+                Our specific particle filtering approach derives from chapter [3] of [1]. Specifically the RSSI measurement \( z_m \) in dB is assumed to be
                 represented by the model
             </p>
             <p style="font-size: 1.5em; text-align: center;">
                 \( z_m = \mathcal{A}_0 - 10\phi_m \log_{10}(d_m / d_0) + \nu_m \)
             </p>
             <p>
-                where \( \mathcal{A}_0 \in \mathbb{R}\) Is the received power and dB at short reference distance \( d_0 \) from the source. \( \phi_m \) is the propagation loss from the
-                source to the sensor. \( d \) is the Euclidian distance from the source to the sensor in meters. And \( v_m \) is zero mean Gaussian white noise with known
-                standard deviation \( \sigma = 2 \)
+                where \( \mathcal{A}_0 \in \mathbb{R}\) Is the received power and dB at short reference distance \( d_0 \) from the source. \( \phi_m \) is
+                the propagation loss from the source to the sensor. \( d \) is the Euclidian distance from the source to the sensor in meters. And \( v_m \)
+                is zero mean Gaussian white noise with known standard deviation \( \sigma = 2 \)
+            </p>
+            <p>
+                Ideally the propagation loss \( \phi_m \) in free space is two. However, \( \phi_m \) will be distinct at different locations due to multipath
+                and shadowing. In some applications it is desirable to learn \( \phi_m \) as a function of sensor and source location \( (\phi_m(x_s,x_m)) \).
+                We won't be able to do that so we just need to deal with uncertainty in practice \( \phi_m \) is between 2 and 4 [1]. We do not have access to
+                the reference power \( (\mathcal{A}_0) \) of the source that we're localizing we assume that \( \mathcal{A}_0 \in [-65, -25] \).
+            </p>
+            <p>
+                Our approach to localization (described in chapter [3] of [1]) is to use a particle filter. Each particle filter in our filter represents a
+                hypophesis of the radial parameters \( \mathcal{A}_0 \) and a position \( x_h \) that gives a distance when compared to the location where a
+                measurement is taken \( x_m \). Using the generalized likelihood function in [1} we evaluate the likelihood of each hypothesis for each new
+                measurement. The least likely hypotheses is discarded and replaced with new hypothesis. Over distribution over the possible position of the
+                true RF source.
             </p>
         </div>
     </div>
