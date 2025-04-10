@@ -1,4 +1,4 @@
 # RF Localization
 
-<p>SilentisVox</p>
+SilentisVox
 <p>April 9, 2025</p>
