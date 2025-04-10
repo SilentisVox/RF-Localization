@@ -29,7 +29,9 @@ Note, the Pi 2 onboard Wi-Fi only support 2.4 GHz bands. As a result, active sca
 Our specific particle filtering approach derives from chapter [3] of [1]. Specifically the RSSI measurement 
  in dB is assumed to be represented by the model
 
-\( z_m = \mathcal{A}_0 - 10\phi_m \log_{10}(d_m / d_0) + \nu_m \)
+\[
+z_m = \mathcal{A}_0 - 10\phi_m \log_{10}(d_m / d_0) + \nu_m
+\]
 
 where 
  Is the received power and dB at short reference distance 
