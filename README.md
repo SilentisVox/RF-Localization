@@ -38,3 +38,9 @@ Our specific particle filtering approach derives from chapter [3] of [1]. Specif
   />
   </br>
 </p>
+
+where \( A_0 \in \mathbb{R}^- \) is the received power (in decibels) at a short reference distance \( d_0 \) from the source, \(\varphi_m\) is the propagation loss from the source to the sensor, \( d \) is the Euclidean distance from the source to the sensor (in meters), and \( V_m \) is zero-mean Gaussian white noise with known standard deviation \( \sigma = 2 \).
+
+Ideally, the propagation loss \(\varphi_m\) in free space is 2. However, \(\varphi_m\) will be distinct at different locations due to multipath and shadowing. In some applications, it is desirable to learn \(\varphi_m\) as a function of sensor and source location, i.e., \(\varphi_m(x_s, x_m)\). We won't be able to do that, so we just need to deal with the uncertainty. In practice, \(\varphi_m\) is between 2 and 4. We do not have access to the reference power \( A_0 \) of the source that we're localizing. We assume that \( A_0 \in [-65, -25] \).
+
+Our approach to localization (described in Chapter 3 of [1]) is to use a particle filter. Each particle in our filter represents a hypothesis of the radio parameters \( A_0 \) and a position \( x_h \) that gives a distance when compared to the location where a measurement is taken, \( x_m \). Using the generalized likelihood function in [1], we evaluate the likelihood of each hypothesis for each new measurement. The least likely hypotheses are discarded and replaced with new hypotheses. Over time, hypotheses that are not supported by the data are culled, and the surviving hypotheses (particles) give a probability distribution over the possible position of the true RF source.
