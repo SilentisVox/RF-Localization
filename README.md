@@ -31,8 +31,8 @@ Our specific particle filtering approach derives from chapter [3] of [1]. Specif
 <p align="center">
   </br>
   <img
-    src="https://latex.codecogs.com/svg.latex?%5Ccolor%7Bwhite%7D%20Z_m%20%3D%20A_0%20-%2010%20%5Cvarphi_m%20%5Clog_%7B10%7D%5Cleft%28d_m/d_0%5Cright%29%20%2B%20V_m"
-    alt="Z_m = A_0 - 10 φ_m log₁₀(d_m/d_0) + V_m"
+    src="https://latex.codecogs.com/svg.latex?%5Ccolor%7Bwhite%7D%20Z_m%20%3D%20A_0%20-%2010%20%5Cvarphi_m%20%5Clog_%7B10%7D%5Cleft%28d_m/d_0%5Cright%29%20%2B%20v_m"
+    alt="Z_m = A_0 - 10 φ_m log₁₀(d_m/d_0) + v_m"
     width="400"
     style="height:auto"
   />
