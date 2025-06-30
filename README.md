@@ -44,3 +44,15 @@ where <img src="https://latex.codecogs.com/svg.image?\color{white}A_0%20\in%20\m
 Ideally, the propagation loss <img src="https://latex.codecogs.com/svg.image?\color{white}\varphi_m" style="vertical-align: middle;"> in free space is 2. However, <img src="https://latex.codecogs.com/svg.image?\color{white}\varphi_m" style="vertical-align: middle;"> will be distinct at different locations due to multipath and shadowing. In some applications, it is desirable to learn <img src="https://latex.codecogs.com/svg.image?\color{white}\varphi_m(x_s,%20x_m)" style="vertical-align: middle;"> as a function of sensor and source location. We won't be able to do that, so we just need to deal with the uncertainty. In practice, <img src="https://latex.codecogs.com/svg.image?\color{white}\varphi_m" style="vertical-align: middle;"> is between 2 and 4. We do not have access to the reference power <img src="https://latex.codecogs.com/svg.image?\color{white}A_0" style="vertical-align: middle;"> of the source that we're localizing. We assume that <img src="https://latex.codecogs.com/svg.image?\color{white}A_0%20\in%20%5B-65%2C%20-25%5D" style="vertical-align: middle;">.
 
 Our approach to localization (described in Chapter 3 of [1]) is to use a particle filter. Each particle in our filter represents a hypothesis of the radio parameters <img src="https://latex.codecogs.com/svg.image?\color{white}A_0" style="vertical-align: middle;"> and a position <img src="https://latex.codecogs.com/svg.image?\color{white}x_h" style="vertical-align: middle;"> that gives a distance when compared to the location where a measurement is taken, <img src="https://latex.codecogs.com/svg.image?\color{white}x_m" style="vertical-align: middle;">. Using the generalized likelihood function in [1], we evaluate the likelihood of each hypothesis for each new measurement. The least likely hypotheses are discarded and replaced with new hypotheses. Over time, hypotheses that are not supported by the data are culled, and the surviving hypotheses (particles) give a probability distribution over the possible position of the true RF source.
+
+### 4      Experiments
+
+Experiments were performed by placing wifi routers at known locations and having a survey device pass by in an ad-hoc search pattern. The data obtained during the flight were pulled from the survey device and the particle filter localization algorithm was run on a separate laptop computer for each wfif network recorded in the data. Results from a single survey performed at an undisclosed location.
+
+Figure 1 shows the search pattern that surveyed. Visualization is accomplished useing the python folium package.
+
+<div align="center" markdown="1">
+  <img width="736" src="https://github.com/SilentisVox/RF-Localization/blob/master/assets/example.png">
+  <br>
+  <sup>Figure 1</sup>
+</div>
