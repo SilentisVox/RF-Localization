@@ -51,8 +51,10 @@ Experiments were performed by placing wifi routers at known locations and having
 
 Figure 1 shows the search pattern that surveyed. Visualization is accomplished useing the python folium package.
 
-<div align="center" markdown="1">
-  <img width="736" src="https://github.com/SilentisVox/RF-Localization/blob/master/assets/example.png">
+<p align="center">
+  <img width="736"
+       src="https://raw.githubusercontent.com/SilentisVox/RF-Localization/master/assets/example.png"
+       alt="Figure 1">
   <br>
   <sup>Figure 1</sup>
-</div>
+</p>
