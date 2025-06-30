@@ -49,7 +49,7 @@ Our approach to localization (described in Chapter 3 of [1]) is to use a particl
 
 Experiments were performed by placing wifi routers at known locations and having a survey device pass by in an ad-hoc search pattern. The data obtained during the flight were pulled from the survey device and the particle filter localization algorithm was run on a separate laptop computer for each wfif network recorded in the data. Results from a single survey performed at an undisclosed location.
 
-Figure 1 shows the search pattern that surveyed. Visualization is accomplished useing the python folium package.
+Figure 1 shows the search pattern that surveyed. Visualization is accomplished using the python folium package.
 
 <p align="center">
   <img width="736"
